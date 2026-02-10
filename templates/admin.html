@@ -1,0 +1,73 @@
+
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>پنل مدیریت | کیاپارس</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;700&display=swap" rel="stylesheet">
+    <style>body { font-family: 'Vazirmatn', sans-serif; background-color: #020617; }</style>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen">
+    <nav class="bg-slate-900 border-b border-slate-800 p-6">
+        <div class="container mx-auto flex justify-between items-center">
+            <h1 class="text-2xl font-bold text-amber-500">پنل مدیریت کیاپارس</h1>
+            <a href="/logout" class="text-red-400 hover:text-red-300 font-bold">خروج</a>
+        </div>
+    </nav>
+
+    <div class="container mx-auto px-6 py-12">
+        <div class="grid lg:grid-cols-3 gap-12">
+            <!-- فرم افزودن محصول -->
+            <div class="lg:col-span-1">
+                <div class="bg-slate-900 p-8 rounded-3xl border border-slate-800 sticky top-12">
+                    <h2 class="text-xl font-bold mb-8 text-amber-500">افزودن محصول جدید</h2>
+                    <form action="/admin/add" method="POST" enctype="multipart/form-data" class="space-y-6">
+                        <div>
+                            <label class="block text-slate-400 text-sm mb-2">نام محصول</label>
+                            <input type="text" name="name" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-white focus:border-amber-500 outline-none" required>
+                        </div>
+                        <div>
+                            <label class="block text-slate-400 text-sm mb-2">قیمت (یا عبارت 'تماس بگیرید')</label>
+                            <input type="text" name="price" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-white focus:border-amber-500 outline-none" placeholder="مثلاً ۵۰۰,۰۰۰ تومان" required>
+                        </div>
+                        <div>
+                            <label class="block text-slate-400 text-sm mb-2">توضیحات کوتاه</label>
+                            <textarea name="description" rows="3" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-white focus:border-amber-500 outline-none" required></textarea>
+                        </div>
+                        <div>
+                            <label class="block text-slate-400 text-sm mb-2">عکس محصول (خودکار کراپ می‌شود)</label>
+                            <input type="file" name="image" class="w-full text-slate-500 text-sm file:bg-amber-500 file:text-slate-950 file:px-4 file:py-2 file:rounded-xl file:border-0 file:font-bold hover:file:bg-amber-600 cursor-pointer" required>
+                        </div>
+                        <button type="submit" class="w-full bg-amber-500 text-slate-950 font-bold py-4 rounded-xl hover:bg-amber-600 transition shadow-lg shadow-amber-500/10">ثبت محصول</button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- لیست محصولات -->
+            <div class="lg:col-span-2">
+                <h2 class="text-2xl font-bold mb-8">محصولات فعلی</h2>
+                <div class="grid sm:grid-cols-2 gap-6">
+                    {% for product in products %}
+                    <div class="bg-slate-900 border border-slate-800 rounded-3xl overflow-hidden flex flex-col">
+                        <img src="{{ url_for('static', filename='uploads/' + product.image) }}" class="w-full aspect-square object-cover">
+                        <div class="p-6 flex-grow">
+                            <h3 class="font-bold text-lg mb-2">{{ product.name }}</h3>
+                            <p class="text-slate-500 text-sm mb-4 h-12 overflow-hidden">{{ product.description }}</p>
+                            <div class="flex justify-between items-center">
+                                <span class="text-amber-500 font-bold">{{ product.price }}</span>
+                                <a href="/admin/delete/{{ product.id }}" onclick="return confirm('آیا از حذف این محصول مطمئن هستید؟')" class="text-red-500 text-sm font-bold hover:underline">حذف</a>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                    {% if not products %}
+                    <p class="text-slate-600 col-span-2 text-center py-20 bg-slate-900/50 rounded-3xl border border-dashed border-slate-800">هنوز محصولی ثبت نشده است.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

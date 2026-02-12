@@ -22,3 +22,9 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+static/uploads/gainer.jpg
+.gitignore
+static/uploads/mre.jpg
+.gitignore
+static/uploads/manwhey.jpg
+static/uploads/whey.jpg
